@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.innovatexts.myFarm.DTO.TrabajoDTO;
+import com.innovatexts.myFarm.models.Cultivo;
 import com.innovatexts.myFarm.models.Trabajo;
+import com.innovatexts.myFarm.repository.CultivoRepository;
 import com.innovatexts.myFarm.services.TrabajoService;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class TrabajoController {
 
     @Autowired
     private TrabajoService trabajoService;
+    @Autowired
+    private CultivoRepository cultivoRepository;
 
     @GetMapping
     public List<Trabajo> listar() {
@@ -50,7 +54,9 @@ public class TrabajoController {
             trabajoExistente.setDetalle(trabajoActualizado.getDetalle());
         }
         if (trabajoActualizado.getId_cultivo() != null) {
-            trabajoExistente.setId_cultivo(trabajoActualizado.getId_cultivo());
+            Cultivo cultivo = cultivoRepository.findById(trabajoActualizado.getId_cultivo())
+                    .orElseThrow(() -> new RuntimeException("Cultivo no encontrado"));
+            trabajoExistente.setCultivo(cultivo);
         }
         if (Math.abs(trabajoActualizado.getInversion() - trabajoExistente.getInversion()) > 0.0001f) {
             trabajoExistente.setInversion(trabajoActualizado.getInversion());
@@ -70,5 +76,17 @@ public class TrabajoController {
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
         trabajoService.eliminarTrabajo(id);
+    }
+
+    @PatchMapping("/{idTrabajo}/asignar-cultivo/{idCultivo}")
+    public Trabajo asignarCultivoATrabajo(@PathVariable Integer idTrabajo, @PathVariable Integer idCultivo) {
+        return trabajoService.asignarCultivo(idTrabajo, idCultivo);
+    }
+
+    @PatchMapping("/{idTrabajo}/asignar-trabajadores")
+    public Trabajo asignarTrabajadores(
+            @PathVariable Integer idTrabajo,
+            @RequestBody List<Integer> idsTrabajadores) {
+        return trabajoService.asignarTrabajadores(idTrabajo, idsTrabajadores);
     }
 }

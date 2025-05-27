@@ -1,6 +1,8 @@
 package com.innovatexts.myFarm.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 @Entity
@@ -11,20 +13,40 @@ public class Trabajo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public Integer getId() {
+    private String nombre;
+    private String detalle;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cultivo")
+    private Cultivo cultivo;
+
+    private float inversion;
+    private Date fecha_inicio;
+    private Date fecha_fin;
+
+     @ManyToMany
+    @JoinTable(
+        name = "trabajo_usuario",
+        joinColumns = @JoinColumn(name = "id_trabajo"),
+        inverseJoinColumns = @JoinColumn(name = "id_usuario")
+    )
+     private List<Usuario> trabajadores = new ArrayList<>();
+
+     public List<Usuario> getTrabajadores() {
+         return this.trabajadores;
+     }
+
+     public void setTrabajadores(List<Usuario> trabajadores) {
+         this.trabajadores = trabajadores;
+     }
+
+        public Integer getId() {
         return this.id;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
-
-    private String nombre;
-    private String detalle;
-    private Integer id_cultivo;
-    private float inversion;
-    private Date fecha_inicio;
-    private Date fecha_fin;
 
     public String getNombre() {
         return this.nombre;
@@ -42,12 +64,12 @@ public class Trabajo {
         this.detalle = detalle;
     }
 
-    public Integer getId_cultivo() {
-        return this.id_cultivo;
+    public Cultivo getCultivo() {
+        return this.cultivo;
     }
 
-    public void setId_cultivo(Integer id_cultivo) {
-        this.id_cultivo = id_cultivo;
+    public void setCultivo(Cultivo cultivo) {
+        this.cultivo = cultivo;
     }
 
     public float getInversion() {

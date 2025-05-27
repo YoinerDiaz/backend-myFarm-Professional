@@ -1,7 +1,12 @@
 package com.innovatexts.myFarm.models;
 
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.*;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -14,10 +19,13 @@ public class Usuario {
     private String usuario;
     private String contacto;
     private String password;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rol_id", nullable = false)
+    @JoinColumn(name = "rol", nullable = false)
     private Rol rol;
+
+    @ManyToMany(mappedBy = "trabajadores")
+    private List<Trabajo> trabajos = new ArrayList<>();
 
     public Rol getRol() {
         return this.rol;

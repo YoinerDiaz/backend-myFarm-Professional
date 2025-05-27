@@ -1,6 +1,7 @@
 package com.innovatexts.myFarm.DTO;
 
 import java.util.Date;
+import java.util.List;
 
 public class TrabajoDTO {
 
@@ -10,6 +11,7 @@ public class TrabajoDTO {
     private float inversion;
     private Date fecha_inicio;
     private Date fecha_fin;
+    private List<Long> trabajadoresIds;
 
     public String getNombre() {
         return this.nombre;
