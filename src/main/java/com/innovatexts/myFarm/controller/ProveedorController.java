@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -12,6 +13,7 @@ import com.innovatexts.myFarm.models.Proveedor;
 import com.innovatexts.myFarm.services.ProveedorService;
 
 @RestController
+@PreAuthorize("hasRole('PATRON')")
 @RequestMapping("/api/proveedores")
 @CrossOrigin(origins = "*")
 public class ProveedorController {

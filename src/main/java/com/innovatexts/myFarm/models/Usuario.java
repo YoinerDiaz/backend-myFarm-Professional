@@ -20,7 +20,7 @@ public class Usuario {
     private String contacto;
     private String password;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol", nullable = false)
     private Rol rol;
 

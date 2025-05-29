@@ -1,6 +1,7 @@
 package com.innovatexts.myFarm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.innovatexts.myFarm.DTO.TrabajoDTO;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@PreAuthorize("hasAnyRole('PATRON', 'ADMINISTRADOR')")
 @RequestMapping("/api/trabajos")
 @CrossOrigin(origins = "*") // Habilita peticiones desde el frontend
 public class TrabajoController {

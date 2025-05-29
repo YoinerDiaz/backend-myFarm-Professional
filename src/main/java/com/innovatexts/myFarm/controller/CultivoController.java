@@ -3,7 +3,7 @@ package com.innovatexts.myFarm.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,13 +14,14 @@ import com.innovatexts.myFarm.repository.UsuarioRepository;
 import com.innovatexts.myFarm.services.CultivoService;
 
 @RestController
+@PreAuthorize("hasRole('PATRON')")
 @RequestMapping("/api/cultivos")
 @CrossOrigin(origins = "*")
 public class CultivoController {
     private CultivoService cultivoService;
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
+    
     public CultivoController(CultivoService cultivoService, UsuarioRepository usuarioRepository) {
         this.cultivoService = cultivoService;
         this.usuarioRepository = usuarioRepository;

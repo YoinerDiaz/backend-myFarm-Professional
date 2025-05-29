@@ -13,6 +13,14 @@ public class TrabajoDTO {
     private Date fecha_fin;
     private List<Long> trabajadoresIds;
 
+    public List<Long> getTrabajadoresIds() {
+        return this.trabajadoresIds;
+    }
+
+    public void setTrabajadoresIds(List<Long> trabajadoresIds) {
+        this.trabajadoresIds = trabajadoresIds;
+    }
+
     public String getNombre() {
         return this.nombre;
     }

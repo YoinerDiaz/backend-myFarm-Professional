@@ -1,7 +1,5 @@
 package com.innovatexts.myFarm.models;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 @Entity
 @Table(name = "proveedor")

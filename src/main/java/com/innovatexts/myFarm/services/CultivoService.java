@@ -3,7 +3,7 @@ package com.innovatexts.myFarm.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import com.innovatexts.myFarm.models.Cultivo;
 import com.innovatexts.myFarm.DTO.CultivoDTO;
@@ -17,7 +17,6 @@ public class CultivoService {
     private CultivoRepository cultivoRepository;
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
     public CultivoService(CultivoRepository cultivoRepository, UsuarioRepository usuarioRepository) {
         this.cultivoRepository = cultivoRepository;
         this.usuarioRepository = usuarioRepository;

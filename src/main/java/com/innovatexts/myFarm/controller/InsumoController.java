@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.innovatexts.myFarm.DTO.InsumoDTO;
@@ -11,6 +12,7 @@ import com.innovatexts.myFarm.models.Insumo;
 import com.innovatexts.myFarm.services.InsumoService;
 
 @RestController
+@PreAuthorize("hasAnyRole('PATRON', 'ADMINISTRADOR')")
 @RequestMapping("/api/insumos")
 @CrossOrigin(origins = "*")
 public class InsumoController {
