@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.innovatexts.myFarm.DTO.RegistroUsuarioDTO;
+import com.innovatexts.myFarm.DTO.UsuarioDTO;
 import com.innovatexts.myFarm.models.Rol;
 import com.innovatexts.myFarm.models.Usuario;
 import com.innovatexts.myFarm.repository.RolRepository;
@@ -70,5 +71,40 @@ public class UsuarioService {
     public Usuario findByUsername(String username) {
         return usuarioRepository.findByUsuario(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+    }
+
+    public Usuario actualizarUsuario(UsuarioDTO usuarioActualizado, Integer id){
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+    if (usuarioOpt.isEmpty()) {
+        throw new IllegalArgumentException("El usuario con ID " + id + " no existe.");
+    }
+
+    Usuario usuarioExistente = usuarioOpt.get();
+
+    // Actualizar campos si vienen en el DTO
+    if (usuarioActualizado.getNombre() != null) {
+        usuarioExistente.setNombre(usuarioActualizado.getNombre());
+    }
+
+    if (usuarioActualizado.getUsuario() != null) {
+        usuarioExistente.setUsuario(usuarioActualizado.getUsuario());
+    }
+
+    if (usuarioActualizado.getContacto() != null) {
+        usuarioExistente.setContacto(usuarioActualizado.getContacto());
+    }
+
+    // Validar y actualizar el rol si viene
+    if (usuarioActualizado.getRol() != null) {
+        Optional<Rol> rolOpt = rolRepository.findById(usuarioActualizado.getRol());
+        if (rolOpt.isEmpty()) {
+            throw new IllegalArgumentException("El rol con ID " + usuarioActualizado.getRol() + " no existe.");
+        }
+
+        usuarioExistente.setRol(rolOpt.get());
+    }
+    return usuarioRepository.save(usuarioExistente);
+
     }
 }

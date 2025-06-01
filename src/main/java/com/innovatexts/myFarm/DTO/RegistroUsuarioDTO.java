@@ -4,6 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegistroUsuarioDTO {
+    private Integer id;
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @NotBlank(message = "El nombre de usuario es obligatorio")
     @Size(min = 3, max = 255, message = "El nombre de usuario debe tener entre 3 y 255 caracteres")
     private String usuario;

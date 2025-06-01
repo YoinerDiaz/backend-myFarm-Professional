@@ -1,9 +1,12 @@
 package com.innovatexts.myFarm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.innovatexts.myFarm.DTO.RegistroUsuarioDTO;
+import com.innovatexts.myFarm.DTO.UsuarioDTO;
 import com.innovatexts.myFarm.models.Usuario;
 import com.innovatexts.myFarm.services.UsuarioService;
 
@@ -30,15 +33,15 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        return usuarioService.guardarUsuario(usuario);
+    public Usuario crear(@RequestBody RegistroUsuarioDTO usuario) {
+        return usuarioService.registrarUsuario(usuario);
     }
 
     @PutMapping("/{id}")
-    public Usuario actualizar(@PathVariable Integer id, @RequestBody Usuario usuarioActualizado) {
-        usuarioActualizado.setUid(id);
-        return usuarioService.guardarUsuario(usuarioActualizado);
-    }
+    public ResponseEntity<Usuario> actualizarUsuario (@PathVariable Integer id, @RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuarioActualizado = usuarioService.actualizarUsuario(usuarioDTO, id);
+        return ResponseEntity.ok(usuarioActualizado);
+}
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
