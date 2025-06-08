@@ -1,8 +1,11 @@
 package com.innovatexts.myFarm.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
-import com.innovatexts.myFarm.DTO.TrabajoInsumoDTO;
+import com.innovatexts.myFarm.DTO.TrabajoInsumoResponseDTO;
 import com.innovatexts.myFarm.models.Insumo;
 import com.innovatexts.myFarm.models.Trabajo;
 import com.innovatexts.myFarm.models.TrabajoInsumo;
@@ -27,8 +30,24 @@ public class TrabajoInsumoService {
         this.trabajoInsumoRepository = trabajoInsumoRepository;
     }
 
+    public List<TrabajoInsumoResponseDTO> getAllAsignacionesWithDetails() {
+        List<TrabajoInsumo> asignaciones = trabajoInsumoRepository.findAll();
+        
+        // Mapea la lista de entidades a una lista de DTOs
+        return asignaciones.stream().map(asignacion ->
+            new TrabajoInsumoResponseDTO(
+                asignacion.getId(),
+                asignacion.getTrabajo().getNombre(), // Obtiene el nombre del trabajo
+                asignacion.getTrabajo().getId(),     // Obtiene el ID del trabajo
+                asignacion.getInsumo().getNombre(),  // Obtiene el nombre del insumo
+                asignacion.getInsumo().getId(),      // Obtiene el ID del insumo
+                asignacion.getCantidadUsada()
+            )
+        ).collect(Collectors.toList());
+    }
+
     // Crear
-    public void asignarInsumoATrabajo(TrabajoInsumoDTO dto) {
+    public void asignarInsumoATrabajo(TrabajoInsumoResponseDTO dto) {
         Trabajo trabajo = trabajoRepository.findById(dto.getTrabajoId()).orElseThrow();
         Insumo insumo = insumoRepository.findById(dto.getInsumoId()).orElseThrow();
 
@@ -48,7 +67,7 @@ public class TrabajoInsumoService {
     }
 
     // Editar
-    public void editarAsignacion(TrabajoInsumoDTO dto) {
+    public void editarAsignacion(TrabajoInsumoResponseDTO dto) {
         TrabajoInsumo trabajoInsumo = trabajoInsumoRepository.findById(dto.getId()).orElseThrow();
         Insumo insumo = trabajoInsumo.getInsumo();
 
